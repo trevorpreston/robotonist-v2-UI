@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Configuration from './components/botConfig/Configuration';
+
+
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      menuOpen: false
+    }
+  }
+
+  renderMenu() {
+    return (
+      <section className="menu">
+        <div>configure</div>
+        <div>bot dashboard</div>
+        <div>plant info</div>
+        <div>profile</div>
+      </section>
+    )
+  }
+
+  toggleMenu() {
+    this.setState({menuOpen: !this.state.menuOpen})
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <nav>
+          <div className="logo-container">
+            <div id="logo"></div>
+            <p id="robotanist">roBotanist</p>
+          </div>
+          <div className="hamburger" onClick={this.toggleMenu.bind(this)}>hamburger</div>
+        </nav>
+        { this.state.menuOpen ? this.renderMenu() : ''}
+        <Configuration/>
+      </div>
+    );
+  }
 }
 
 export default App;
