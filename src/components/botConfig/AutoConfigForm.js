@@ -1,7 +1,25 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-const AutoConfigForm = props => {
-  return <div>auto config</div>
+class AutoConfigForm extends Component {
+  renderPastPlants() {
+    return (
+      this.props.pastPlants.map(plant => {
+        return <option value={plant.id}>{plant.name}</option>
+      })
+    )
+  }
+  render() {
+    return(
+      <div>
+        <p>auto config</p>
+        <form>
+          <select>
+            {this.renderPastPlants()}
+          </select>
+        </form>
+      </div>
+    )
+  }
 };
 
 export default AutoConfigForm;

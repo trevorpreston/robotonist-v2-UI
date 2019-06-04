@@ -10,6 +10,8 @@ class App extends Component {
     this.state = {
       menuOpen: false
     }
+    
+    this.toggleMenu = this.toggleMenu.bind(this);
   }
 
   renderMenu() {
@@ -35,7 +37,7 @@ class App extends Component {
             <div id="logo"></div>
             <p id="robotanist">roBotanist</p>
           </div>
-          <div className="hamburger" onClick={this.toggleMenu.bind(this)}>hamburger</div>
+          <div className="hamburger" onClick={this.toggleMenu}>hamburger</div>
         </nav>
         { this.state.menuOpen ? this.renderMenu() : ''}
         <Configuration/>
