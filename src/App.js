@@ -44,7 +44,7 @@ class App extends Component {
           </div>
           <div className="hamburger" onClick={this.toggleMenu}>hamburger</div>
         </nav>
-        { this.state.menuOpen && <Menu/> }
+        <Menu menuOpen={this.state.menuOpen}/>
         <Route exact path="/" component={Configuration} />
         <Route path="/dashboard/" component={BotDashboard} />
         <Route path="/plantmanager/" component={PlantManager} />

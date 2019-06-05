@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import './BotConfig.scss';
+
 import AutoConfigForm from './AutoConfigForm';
 import AddNewPlant from './AddNewPlant';
 
