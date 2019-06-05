@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Select from 'react-select';
 import './BotConfig.scss';
 
 import AutoConfigForm from './AutoConfigForm';
@@ -31,7 +32,7 @@ class Configuration extends Component {
     // fetchBots();
 
     /* NOTE: using dummy data until API is complete. */
-    this.setState({  
+    this.setState({
       availablePlants: [
         { id: 1, name: 'orchid', soilMoisture: 7 }, 
         { id: 6, name: 'sunflower', soilMoisture: 11 }, 
@@ -39,9 +40,9 @@ class Configuration extends Component {
         { id: 11, name: 'snapdragon', soilMoisture: 4 }
       ],
       bots: [
-        {id: 1, name: 'office', connection: 'url1'}, 
-        {id: 2,  name: 'kitchen', connection: 'url2'}, 
-        {id: 3, name: 'living room', connection: 'url3'}
+        {id: 1, name: 'office'}, 
+        {id: 2,  name: 'kitchen'}, 
+        {id: 3, name: 'living room'}
       ],
       selectedBotId: 3
     })
@@ -61,8 +62,9 @@ class Configuration extends Component {
       .catch(error => console.error('Error fetching bots:', error))
   }
 
-  updateSelectedBot(event) {
-    this.setState({selectedBotId: Number(event.target.value)})
+  updateSelectedBot(selectedOption) {
+    console.log(selectedOption.value)
+    this.setState({selectedBotId: selectedOption.value});
   }
 
   updateWateringFrequency(event) {
@@ -130,17 +132,31 @@ class Configuration extends Component {
     })
   }
 
+  renameKeys(keysMap, obj) {  // changes keys of an object
+    return (
+      Object.keys(obj)
+      .reduce((acc, key) => ({
+          ...acc,
+          ...{ [keysMap[key] || key]: obj[key] }
+      }), {})
+    )
+  }
+
   renderForm() {
     return (
-      <div>
+      <div className="bot-config-container">
         <form onSubmit={this.submitBotUpdate}>
-          <select name="bot-select" id="" onChange={this.updateSelectedBot}>
-            {this.renderBotOptions()}
-          </select>
+          <p>Select Bot:</p>
+          <Select
+            value={this.state.selectedBotId}
+            onChange={this.updateSelectedBot}
+            options={this.state.bots.map(bot => this.renameKeys({id: 'value', name: 'label'}, bot))}
+          />
           {this.state.manual ?
             <input type="number" onChange={this.updateWateringFrequency}/> :
             <AutoConfigForm 
               availablePlants={this.state.availablePlants} 
+              updateSelectedBot={this.state.updateSelectedBot}
               updateSoilMoisture={this.updateSoilMoisture}
               toggleAddNewPlant={this.toggleAddNewPlant}
             />}
@@ -157,11 +173,11 @@ class Configuration extends Component {
 
   render() {
     return (
-      <div>
+      <div className="bot-config-wrapper">
         {this.renderForm()}
-        <button className="toggleConfigForm" onClick={this.toggleFormType}>
+        <div className="toggleConfigForm" onClick={this.toggleFormType}>
           {this.state.manual? 'configure with tools' : 'manual configuration'}
-        </button>
+        </div>
       </div>
     )
   }

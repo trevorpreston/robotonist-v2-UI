@@ -1,0 +1,39 @@
+@import '../../styles/_colors.scss';
+
+.bot-config-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bot-config-container {
+  width: 40vw;
+  margin: 10% auto 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $light-gray;
+}
+
+.bot-config-container form {
+  width: 80%;
+}
+
+.bot-config-container select {
+  display: none;
+}
+
+.bot-config-container option {
+  padding: 15px;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+
+
+.toggleConfigForm {
+  display: block;
+  margin: 0;
+}
+

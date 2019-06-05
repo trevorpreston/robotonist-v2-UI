@@ -4,12 +4,10 @@ class AutoConfigForm extends Component {
   render() {
     return(
         <div>
-          <p>auto config</p>
-          <select name="plant-select" onChange={this.props.updateSoilMoisture}>
-          { this.props.availablePlants.map(plant => {
-            return <option key={plant.id} value={plant.soilMoisture}>{ plant.name } -- last setting: {plant.soilMoisture} ml/cm</option>
-          }) }
-          </select>
+          <label>
+            Soil Moisture:
+            <input type="text" onChange={this.props.updateSoilMoisture}/>
+          </label>
           <div className="addNew" onClick={this.props.toggleAddNewPlant}>add new plant</div>
         </div>
       )
