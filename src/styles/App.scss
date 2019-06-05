@@ -1,0 +1,42 @@
+@import '_colors.scss';
+
+nav {
+  background-color: $base-color;
+  height: 70px;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container > img {
+  width: 60px;
+  margin: auto 20px;
+}
+
+.logo-container > span {
+  font-size: 20px;
+  color: #fafafa;
+}
+
+.menu {
+  position: fixed;
+  right: 0px;
+  width: 200px;
+  height: 100vh;
+  background-color: #e2e2e2;
+}
+
+.nav-item {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+

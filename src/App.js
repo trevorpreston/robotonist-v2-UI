@@ -1,47 +1,55 @@
 import React, { Component } from 'react';
-import './App.css';
+import './styles/App.scss';
+import {
+  BrowserRouter as Router,
+  Route,
+} from 'react-router-dom'
 
 import Configuration from './components/botConfig/Configuration';
+import Menu from './components/Menu';
+import BotDashboard from './components/BotDashboard';
+import PlantManager from './components/PlantManager';
+import Profile from './components/Profile';
 
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      menuOpen: false
+      menuOpen: false,
+      currentPage: 'configure'
     }
     
     this.toggleMenu = this.toggleMenu.bind(this);
-  }
-
-  renderMenu() {
-    return (
-      <section className="menu">
-        <div>configure</div>
-        <div>bot dashboard</div>
-        <div>plant info</div>
-        <div>profile</div>
-      </section>
-    )
+    this.changePage = this.changePage.bind(this);
   }
 
   toggleMenu() {
-    this.setState({menuOpen: !this.state.menuOpen})
+    this.setState( prevState => ({
+      menuOpen: !prevState.menuOpen
+    }))
+  }
+
+  changePage(event) {
+    event.preventDefault();
   }
 
   render() {
     return (
-      <div className="App">
+      <Router>
         <nav>
           <div className="logo-container">
-            <div id="logo"></div>
-            <p id="robotanist">roBotanist</p>
+            <img src="./images/logo.png" alt="sprout-logo" className="logo"/>
+            <span id="robotanist">roBotanist</span>
           </div>
           <div className="hamburger" onClick={this.toggleMenu}>hamburger</div>
         </nav>
-        { this.state.menuOpen ? this.renderMenu() : ''}
-        <Configuration/>
-      </div>
+        { this.state.menuOpen && <Menu/> }
+        <Route exact path="/" component={Configuration} />
+        <Route path="/dashboard/" component={BotDashboard} />
+        <Route path="/plantmanager/" component={PlantManager} />
+        <Route path="/profile/" component={Profile} />
+      </Router>
     );
   }
 }

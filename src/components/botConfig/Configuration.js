@@ -1,47 +1,54 @@
 import React, { Component } from 'react';
 import AutoConfigForm from './AutoConfigForm';
+import AddNewPlant from './AddNewPlant';
 
 class Configuration extends Component {
   constructor() {
     super();
     this.state = {
       manual: false,
-      wateringPeriod: 0,
-      pastPlants: [],
+      addNewPlant: false,
+      availablePlants: [],
       bots: [],
-      selectedBotId: 1
+      selectedBotId: undefined,
+      soilMoisture: undefined,
+      wateringFrequency: undefined
     }
 
     this.updateSelectedBot = this.updateSelectedBot.bind(this);
-    this.updateWateringPeriod = this.updateWateringPeriod.bind(this);
+    this.submitBotUpdate = this.submitBotUpdate.bind(this);
     this.submitUpdatedPeriod = this.submitUpdatedPeriod.bind(this);
+    this.updateWateringFrequency = this.updateWateringFrequency.bind(this);
+    this.updateSoilMoisture = this.updateSoilMoisture.bind(this);
     this.toggleFormType = this.toggleFormType.bind(this);
+    this.toggleAddNewPlant = this.toggleAddNewPlant.bind(this);
   }
 
   componentDidMount() {
-    // fetchPastPlants();  
+    // fetchAvailablePlants();  
     // fetchBots();
 
     /* NOTE: using dummy data until API is complete. */
     this.setState({  
-      pastPlants: [
-        { id: 1, name: 'orchid', wateringPeriod: 7 }, 
-        { id: 1, name: 'sunflower', wateringPeriod: 11 }, 
-        { id: 1, name: 'succulent', wateringPeriod: 14 }, 
-        { id: 1, name: 'snapdragon', wateringPeriod: 4 }
+      availablePlants: [
+        { id: 1, name: 'orchid', soilMoisture: 7 }, 
+        { id: 6, name: 'sunflower', soilMoisture: 11 }, 
+        { id: 2, name: 'succulent', soilMoisture: 14 }, 
+        { id: 11, name: 'snapdragon', soilMoisture: 4 }
       ],
       bots: [
         {id: 1, name: 'office', connection: 'url1'}, 
         {id: 2,  name: 'kitchen', connection: 'url2'}, 
         {id: 3, name: 'living room', connection: 'url3'}
-      ]
+      ],
+      selectedBotId: 3
     })
   }
 
-  fetchPastPlants() {
+  fetchAvailablePlants() {
     fetch('localhost:3000/planthistory')
       .then(results => results.json())
-      .then(data => this.setState({pastPlants: data}))
+      .then(data => this.setState({availablePlants: data}))
       .catch(error => console.error('Error fetching plants:', error))
   }
 
@@ -50,23 +57,48 @@ class Configuration extends Component {
       .then(results => results.json())
       .then(data => this.setState({ bots: data, selectedBotId: data[0].id}))
       .catch(error => console.error('Error fetching bots:', error))
-
   }
 
   updateSelectedBot(event) {
     this.setState({selectedBotId: Number(event.target.value)})
   }
 
-  updateWateringPeriod(event) {
-    this.setState({wateringPeriod: Number(event.target.value)});
+  updateWateringFrequency(event) {
+    this.setState({wateringFrequency: Number(event.target.value)})
   }
 
-  submitUpdatedPeriod(event) {
+  updateSoilMoisture(event) {
+    this.setState({soilMoisture: Number(event.target.value)})
+  }
+
+  submitBotUpdate(event) {
     event.preventDefault();
+    this.state.manual ? this.submitUpdatedPeriod() : this.submitUpdatedSoilMoisture()
+  }
+
+  submitUpdatedPeriod() {
+    const data = {
+      botId: this.state.selectedBotId,
+      wateringFrequency: this.state.wateringFrequency
+    }
+
+    console.log(data);
+    
+    // fetch(`localhost:3000/botregistry/${this.state.botId}`, {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // }).then(res => res.json())
+    //   .then(response => console.log('Success:', JSON.stringify(response)))
+    //   .catch(error => console.error('Error:', error));
+  }
+  submitUpdatedSoilMoisture() {
     console.log('submitting new watering period')
     const data = {
       botId: this.state.selectedBotId,
-      wateringPeriod: this.state.wateringPeriod
+      soilMoisture: this.state.soilMoisture
     }
 
     console.log(data);
@@ -83,6 +115,10 @@ class Configuration extends Component {
   }
 
   toggleFormType() {
+    if (this.state.manual === false) {
+      this.setState({addNewPlant: false});
+    }
+
     this.setState({manual: !this.state.manual})
   }
 
@@ -95,17 +131,26 @@ class Configuration extends Component {
   renderForm() {
     return (
       <div>
-        <form onSubmit={this.submitUpdatedPeriod}>
+        <form onSubmit={this.submitBotUpdate}>
           <select name="bot-select" id="" onChange={this.updateSelectedBot}>
             {this.renderBotOptions()}
           </select>
-          {this.state.manual ? 
-            <input type="number" onChange={this.updateWateringPeriod}/>
-            : <AutoConfigForm pastPlants={this.state.pastPlants}/>}
+          {this.state.manual ?
+            <input type="number" onChange={this.updateWateringFrequency}/> :
+            <AutoConfigForm 
+              availablePlants={this.state.availablePlants} 
+              updateSoilMoisture={this.updateSoilMoisture}
+              toggleAddNewPlant={this.toggleAddNewPlant}
+            />}
           <input type="submit"/>
         </form>
+        {this.state.addNewPlant && <AddNewPlant/>}
       </div>
     )
+  }
+
+  toggleAddNewPlant() {
+    this.setState({addNewPlant: !this.state.addNewPlant});
   }
 
   render() {
