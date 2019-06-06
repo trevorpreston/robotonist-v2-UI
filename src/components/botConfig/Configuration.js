@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import './BotConfig.scss';
 
-import AutoConfigForm from './AutoConfigForm';
+import QuickConfiguration from './QuickConfiguration';
 import AddNewPlant from './AddNewPlant';
+import ManualConfiguration from './ManualConfiguration';
 
 class Configuration extends Component {
   constructor() {
@@ -15,7 +16,8 @@ class Configuration extends Component {
       bots: [],
       selectedBotId: undefined,
       soilMoisture: undefined,
-      wateringFrequency: undefined
+      wateringFrequency: undefined,
+      value:"one"
     }
 
     this.updateSelectedBot = this.updateSelectedBot.bind(this);
@@ -64,7 +66,7 @@ class Configuration extends Component {
 
   updateSelectedBot(selectedOption) {
     console.log(selectedOption.value)
-    this.setState({selectedBotId: selectedOption.value});
+    this.setState({selectedBotId: selectedOption});
   }
 
   updateWateringFrequency(event) {
@@ -143,23 +145,34 @@ class Configuration extends Component {
   }
 
   renderForm() {
+    var options = [
+      { value: 'one', label: 'One' },
+      { value: 'two', label: 'Two' }
+    ];
     return (
       <div className="bot-config-container">
         <form onSubmit={this.submitBotUpdate}>
-          <p>Select Bot:</p>
-          <Select
-            value={this.state.selectedBotId}
-            onChange={this.updateSelectedBot}
-            options={this.state.bots.map(bot => this.renameKeys({id: 'value', name: 'label'}, bot))}
-          />
+            <span>select bot:</span>
+            <Select
+              className="select-bot"
+              value={this.state.selectedBotId}
+              // value={this.state.value}
+
+              onChange={this.updateSelectedBot}
+              // onChange={this.updateState.bind(this)}
+
+              // options={options}
+              options={this.state.bots.map(bot => this.renameKeys({id: 'value', name: 'label'}, bot))}
+            />
           {this.state.manual ?
-            <input type="number" onChange={this.updateWateringFrequency}/> :
-            <AutoConfigForm 
+            <ManualConfiguration/>:
+            <QuickConfiguration 
               availablePlants={this.state.availablePlants} 
               updateSelectedBot={this.state.updateSelectedBot}
               updateSoilMoisture={this.updateSoilMoisture}
               toggleAddNewPlant={this.toggleAddNewPlant}
             />}
+
           <input type="submit"/>
         </form>
         {this.state.addNewPlant && <AddNewPlant/>}
@@ -171,12 +184,18 @@ class Configuration extends Component {
     this.setState({addNewPlant: !this.state.addNewPlant});
   }
 
+  updateState(element) {
+    this.setState({value: element});
+  }
+
   render() {
+    console.log(this.state.bots.map(bot => this.renameKeys({id: 'value', name: 'label'}, bot)))
+
     return (
       <div className="bot-config-wrapper">
         {this.renderForm()}
         <div className="toggleConfigForm" onClick={this.toggleFormType}>
-          {this.state.manual? 'configure with tools' : 'manual configuration'}
+          {this.state.manual? 'quick configuration' : 'manual configuration'}
         </div>
       </div>
     )

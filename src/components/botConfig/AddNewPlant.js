@@ -44,7 +44,7 @@ class AddNewPlant extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="add-new-plant">
         <label>
           plant name:
           <input type="text" name="search-plant" onChange={this.updatePlantName}/>

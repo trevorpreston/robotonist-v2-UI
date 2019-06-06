@@ -1,7 +1,7 @@
 @import '_colors.scss';
 
 nav {
-  background-color: $base-color;
+  background-color: $main-green;
   height: 70px;
   width: 100vw;
   display: flex;
@@ -11,17 +11,18 @@ nav {
 .logo-container {
   display: flex;
   align-items: center;
+
+  img {
+    width: 60px;
+    margin: auto 20px;
+  }
+
+  span {
+    font-size: 20px;
+    color: $white;
+  }
 }
 
-.logo-container > img {
-  width: 60px;
-  margin: auto 20px;
-}
-
-.logo-container > span {
-  font-size: 20px;
-  color: $white;
-}
 
 .menu {
   position: fixed;
@@ -51,7 +52,7 @@ nav {
 }
 
 .active {
-  background-color: $secondary-color;
+  background-color: $secondary-green;
   color: $white;
 }
 

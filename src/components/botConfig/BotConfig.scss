@@ -9,31 +9,77 @@
 .bot-config-container {
   width: 40vw;
   margin: 10% auto 0;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: $light-gray;
+  text-align: center;
+
+  .select-bot {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+
+  form {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  p {
+    margin: 4px auto;
+  }
+
+  span, label {
+    display: inline-block;
+    margin: 4px 6px;
+  }
+  
+  input {
+    display: block;
+    width: 98%;
+    height: 30px;
+    font-size: 16px;
+  }
+
+  option {
+    padding: 15px;
+    font-size: 16px;
+    border: none;
+  }
 }
 
-.bot-config-container form {
-  width: 80%;
+.auto-config {
+  margin-top: 15px;
+
+  .avail-plants {
+    border: none;
+    outline: none;    
+  }
+
+  .prev-plant:checked {
+    background: linear-gradient($secondary-green, $secondary-green);
+    color: black;
+  }
+
+  select {
+    width: 100%;
+  }
 }
 
-.bot-config-container select {
-  display: none;
+.addNewPlant {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  background-color: $main-blue;
+  text-align: center;
 }
-
-.bot-config-container option {
-  padding: 15px;
-  border: 6px solid transparent;
-  border-color: #fff transparent transparent transparent;
-}
-
-
 
 .toggleConfigForm {
   display: block;
   margin: 0;
 }
+
 
