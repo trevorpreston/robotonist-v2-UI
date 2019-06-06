@@ -14,10 +14,9 @@ class Configuration extends Component {
       addNewPlant: false,
       availablePlants: [],
       bots: [],
-      selectedBotId: undefined,
+      selectedBot: undefined,
       soilMoisture: undefined,
       wateringFrequency: undefined,
-      value:"one"
     }
 
     this.updateSelectedBot = this.updateSelectedBot.bind(this);
@@ -33,7 +32,8 @@ class Configuration extends Component {
     // fetchAvailablePlants();  
     // fetchBots();
 
-    /* NOTE: using dummy data until API is complete. */
+    /* NOTE: using dummy data until API is complete. 
+    The following will be removed once shipped*/
     this.setState({
       availablePlants: [
         { id: 1, name: 'orchid', soilMoisture: 7 }, 
@@ -46,7 +46,7 @@ class Configuration extends Component {
         {id: 2,  name: 'kitchen'}, 
         {id: 3, name: 'living room'}
       ],
-      selectedBotId: 3
+      selectedBot: {value: 1, label: 'office'}
     })
   }
 
@@ -60,13 +60,20 @@ class Configuration extends Component {
   fetchBots() {
     fetch('localhost:3000/botregistry')
       .then(results => results.json())
-      .then(data => this.setState({ bots: data, selectedBotId: data[0].id}))
+      .then(data => (
+        this.setState({ 
+          bots: data, 
+          selectedBot: {
+            value: data[0].id, 
+            label: data[0].name
+          }
+        })))
       .catch(error => console.error('Error fetching bots:', error))
   }
 
   updateSelectedBot(selectedOption) {
     console.log(selectedOption.value)
-    this.setState({selectedBotId: selectedOption});
+    this.setState({selectedBot: selectedOption});
   }
 
   updateWateringFrequency(event) {
@@ -84,7 +91,7 @@ class Configuration extends Component {
 
   submitUpdatedPeriod() {
     const data = {
-      botId: this.state.selectedBotId,
+      botId: this.state.selectedBot.value,
       wateringFrequency: this.state.wateringFrequency
     }
 
@@ -103,7 +110,7 @@ class Configuration extends Component {
   submitUpdatedSoilMoisture() {
     console.log('submitting new watering period')
     const data = {
-      botId: this.state.selectedBotId,
+      botId: this.state.selectedBot.value,
       soilMoisture: this.state.soilMoisture
     }
 
@@ -145,23 +152,14 @@ class Configuration extends Component {
   }
 
   renderForm() {
-    var options = [
-      { value: 'one', label: 'One' },
-      { value: 'two', label: 'Two' }
-    ];
     return (
       <div className="bot-config-container">
         <form onSubmit={this.submitBotUpdate}>
             <span>select bot:</span>
             <Select
               className="select-bot"
-              value={this.state.selectedBotId}
-              // value={this.state.value}
-
+              value={this.state.selectedBot}
               onChange={this.updateSelectedBot}
-              // onChange={this.updateState.bind(this)}
-
-              // options={options}
               options={this.state.bots.map(bot => this.renameKeys({id: 'value', name: 'label'}, bot))}
             />
           {this.state.manual ?
@@ -182,10 +180,6 @@ class Configuration extends Component {
 
   toggleAddNewPlant() {
     this.setState({addNewPlant: !this.state.addNewPlant});
-  }
-
-  updateState(element) {
-    this.setState({value: element});
   }
 
   render() {
