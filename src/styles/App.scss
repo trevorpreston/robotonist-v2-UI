@@ -29,6 +29,12 @@ nav {
   width: 300px;
   height: 100vh;
   background-color: $light-gray;
+  z-index: 1;
+
+  .active {
+    background-color: $secondary-green;
+    color: $white;
+  }
 }
 
 .menu-close {
@@ -39,6 +45,8 @@ nav {
 .menu-open {
   right: 0px;
   transition: right 0.5s;
+
+
 }
 
 .nav-item {
@@ -51,8 +59,5 @@ nav {
   color: $dark-gray;
 }
 
-.active {
-  background-color: $secondary-green;
-  color: $white;
-}
+
 

@@ -76,11 +76,13 @@ class Configuration extends Component {
   }
 
   updateBotSettings(newSetting) {
+    console.log('updating with settings:')
+    console.log(newSetting)
     this.setState({
       botSettings: {
-        wateringType: newSetting.wateringType,
-        wateringValue: newSetting.wateringValue}
-    })
+        wateringType: newSetting.wateringType ? newSetting.wateringType : this.state.wateringType,
+        wateringValue: newSetting.wateringValue ? newSetting.wateringValue : this.state.wateringValue}
+    }, () => {console.log(this.state.botSettings)})
   }
 
   submitBotUpdate(event) {
@@ -131,9 +133,8 @@ class Configuration extends Component {
 
   renderForm() {
     return (
-      <div className="bot-config-container">
-        <form onSubmit={this.submitBotUpdate}>
-            <span>select bot:</span>
+      <form className="bot-config-container" onSubmit={this.submitBotUpdate}>
+            <p>select bot:</p>
             <Select
               className="select-bot"
               value={this.state.selectedBot}
@@ -141,17 +142,15 @@ class Configuration extends Component {
               options={this.state.bots.map(bot => this.renameKeys({id: 'value', name: 'label'}, bot))}
             />
           {this.state.manual ?
-            <ManualConfiguration/>:
+            <ManualConfiguration
+              updateBotSettings={this.updateBotSettings}
+            />:
             <QuickConfiguration 
               availablePlants={this.state.availablePlants} 
-              updateSelectedBot={this.state.updateSelectedBot}
               updateBotSettings={this.updateBotSettings}
-              toggleAddNewPlant={this.toggleAddNewPlant}
             />}
-
-          <input type="submit"/>
-        </form>
-      </div>
+          <input type="submit" className="submit-btn"/>
+      </form>
     )
   }
 

@@ -6,28 +6,32 @@
   align-items: center;
 }
 
+.toggleConfigForm {
+  display: block;
+  margin: 0;
+}
+
 .bot-config-container {
   width: 40vw;
   margin: 10% auto 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
   background-color: $light-gray;
-  text-align: center;
 
   .select-bot {
     width: 80%;
     margin: 0 auto;
   }
 
-
   form {
     width: 100%;
-    margin: 20px auto;
+    margin-top: 20px;
+    padding: 0 10%;
   }
 
   p {
-    margin: 4px auto;
+    padding-left: 10%;
+    font-size: 18px;
   }
 
   span, label {
@@ -47,6 +51,18 @@
     font-size: 16px;
     border: none;
   }
+
+  .submit-btn {
+    width: 100%;
+    height: 50px;
+    background-color: $main-blue;
+    border: none;
+    outline: none;
+  }
+
+  .submit-btn:active {
+    background-color: $main-blue-active;
+  }
 }
 
 .auto-config {
@@ -62,9 +78,56 @@
     color: black;
   }
 
-  select {
-    width: 100%;
+  label {
+    display: block;
+    padding-left: 10%;
   }
+
+  select {
+    width: 80%;
+    display: block;
+    margin: 8px auto 15px;
+  }
+}
+
+.manual-config {
+  .watering-type {
+    margin-top: 25px;
+
+    p {
+      font-size: 18px;
+    }
+  }
+
+  .watering-type-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px auto 12px;
+
+    span {
+      color: #a5a5a5;
+      font-weight: bold;
+    }
+  
+    .active {
+      color: $main-green;
+    }
+  }
+
+  .watering-value-container {
+    padding: 10%;
+    input {
+      display: inline-block;
+      width: 80%;
+    }
+
+    label {
+      display: inline-block;
+      width: 10%;
+    }
+  }
+
 }
 
 .addNewPlant {
@@ -77,9 +140,5 @@
   text-align: center;
 }
 
-.toggleConfigForm {
-  display: block;
-  margin: 0;
-}
 
 
